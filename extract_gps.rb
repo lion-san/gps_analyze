@@ -15,7 +15,7 @@ begin
   gprmc = 0
 
 
-  #File.open("gps.csv", "w") do |w|
+  File.open("gps.csv", "w") do |w|
 
     File.open(filename) do |file|
       # IO#each_lineは1行ずつ文字列として読み込み、それを引数にブロックを実行する
@@ -31,24 +31,24 @@ begin
           gprmc = gprmc + 1
           strAry = labmen.split(",")
 
-          if ( strAry.length == 12) ||  ( strAry.length == 14) then
+          #if ( strAry.length == 12) ||  ( strAry.length == 14) then
             #puts strAry.length
             ok = ok + 1
             puts labmen
 
-            #w.puts( labmen )
+            w.puts( labmen )
           
             #strAry.each do |val|
               #print("[", val, "]¥n")
             #/mnd
 
-          end
+          #end
 
         end
 
       end
     end
-  #end
+  end
 
   puts "total:  "
   puts  gprmc
