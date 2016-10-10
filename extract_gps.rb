@@ -15,40 +15,51 @@ begin
   gprmc = 0
 
 
-  File.open("gps.csv", "w") do |w|
+  File.open("gps.gpx", "w") do |gpx|
+    #お決まり
+    gpx.puts( "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>\"" )
+    gpx.puts( "<gpx version=\"1.0\" creator=\"WindfurfingLab- http://www.windsurfinglab.com\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://www.topografix.com/GPX/1/0\" xsi:schemaLocation=\"http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd\">" )
 
-    File.open(filename) do |file|
-      # IO#each_lineは1行ずつ文字列として読み込み、それを引数にブロックを実行する
-      # 第1引数: 行の区切り文字列
-      # 第2引数: 最大の読み込みバイト数
-      # 読み込み用にオープンされていない場合にIOError
-      file.each_line do |labmen|
-        # labmenには読み込んだ行が含まれる
+    File.open("gps.csv", "w") do |w|
 
 
-        #先頭文字が$GPRMC
-        if (labmen[0, 6] == "$GPRMC") then
-          gprmc = gprmc + 1
-          strAry = labmen.split(",")
 
-          #if ( strAry.length == 12) ||  ( strAry.length == 14) then
-            #puts strAry.length
-            ok = ok + 1
-            puts labmen
+      File.open(filename) do |file|
+        # IO#each_lineは1行ずつ文字列として読み込み、それを引数にブロックを実行する
+        # 第1引数: 行の区切り文字列
+        # 第2引数: 最大の読み込みバイト数
+        # 読み込み用にオープンされていない場合にIOError
+        file.each_line do |labmen|
+          # labmenには読み込んだ行が含まれる
 
-            w.puts( labmen )
-          
-            #strAry.each do |val|
-              #print("[", val, "]¥n")
-            #/mnd
 
-          #end
+          #先頭文字が$GPRMC
+          if (labmen[0, 6] == "$GPRMC") then
+            gprmc = gprmc + 1
+            strAry = labmen.split(",")
+
+            #if ( strAry.length == 12) ||  ( strAry.length == 14) then
+              #puts strAry.length
+              ok = ok + 1
+              puts labmen
+
+              w.puts( labmen )
+            
+              #strAry.each do |val|
+                #print("[", val, "]¥n")
+              #/mnd
+
+            #end
+
+          end
 
         end
-
       end
     end
-  end
+
+    gpx.puts( "</gpx>" )
+
+  end #End of GPX
 
   puts "total:  "
   puts  gprmc
