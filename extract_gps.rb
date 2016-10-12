@@ -11,62 +11,97 @@ begin
 
   filename = ARGV[0]
 
-  ok = 0
-  gprmc = 0
-
 
   File.open("gps.gpx", "w") do |gpx|
     #お決まり
     gpx.puts( "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>\"" )
     gpx.puts( "<gpx version=\"1.0\" creator=\"WindfurfingLab- http://www.windsurfinglab.com\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://www.topografix.com/GPX/1/0\" xsi:schemaLocation=\"http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd\">" )
 
-    File.open("gps.csv", "w") do |w|
+    gpx.puts( "<trk>" )
+    gpx.puts( "<name>" )
+    gpx.puts( "</name>" )
+    gpx.puts( "<trkseg>" )
 
 
+    File.open(filename) do |file|
+      # IO#each_lineは1行ずつ文字列として読み込み、それを引数にブロックを実行する
+      # 第1引数: 行の区切り文字列
+      # 第2引数: 最大の読み込みバイト数
+      # 読み込み用にオープンされていない場合にIOError
+      file.each_line do |labmen|
+        # labmenには読み込んだ行が含まれる
 
-      File.open(filename) do |file|
-        # IO#each_lineは1行ずつ文字列として読み込み、それを引数にブロックを実行する
-        # 第1引数: 行の区切り文字列
-        # 第2引数: 最大の読み込みバイト数
-        # 読み込み用にオープンされていない場合にIOError
-        file.each_line do |labmen|
-          # labmenには読み込んだ行が含まれる
+        #先頭文字が$GPRMC
+        if (labmen[0, 6] == "$GPRMC") then
+          strAry = labmen.split(",")
+
+          if ( strAry.length == 13) then
+
+            index = 0
+            lat =   0
+            lon =   0
+            ele = 0
+            speed = 0
+            ymd =   "" 
+            time =  "" 
 
 
-          #先頭文字が$GPRMC
-          if (labmen[0, 6] == "$GPRMC") then
-            gprmc = gprmc + 1
-            strAry = labmen.split(",")
-
-            #if ( strAry.length == 12) ||  ( strAry.length == 14) then
-              #puts strAry.length
-              ok = ok + 1
-              puts labmen
-
-              w.puts( labmen )
+            strAry.each do |val|
+             
+              #Extract Data
+              if index == 1  then
+                time = val[0, 2] + ":" + val[2, 2] + ":" + val[4, 2]
+              elsif index == 3 then
+                lat = val
+              elsif index == 5 then
+                lon = val
+              elsif index == 7 then
+                speed = val
+              elsif index == 9 then
+                ymd = "20" + val[4, 2] + "-" + val[2, 2] + "-"  + val[0, 2]
+              end
+              index = index + 1
+            end
             
-              #strAry.each do |val|
-                #print("[", val, "]¥n")
-              #/mnd
+            #Puts Data
+            gpx.print( "<trkpt " )
+            gpx.print( "lat=\"" )
+            gpx.print( lat )
+            gpx.print( "\" " )
+            gpx.print( "lon=\"" )
+            gpx.print( lon )
+            gpx.puts( "\">" )
 
-            #end
+            #標高
+            gpx.print( "<ele>" )
+            gpx.print( ele )
+            gpx.puts( "</ele>" )
 
-          end
+            #時間
+            gpx.print( "<time>" )
+            gpx.print( ymd )
+            gpx.print( "T" )
+            gpx.print( time )
+            gpx.print( "Z" )
+            gpx.puts( "</time>" )
 
-        end
-      end
-    end
+            #速度
+            gpx.print( "<speed>" )
+            gpx.print( speed )
+            gpx.puts( "</speed>" )
 
+            gpx.puts( "</trkpt>" )
+
+          end#13
+
+        end#GPRMC
+      end#labman
+    end#file
+
+    gpx.puts( "</trkseg>" )
+    gpx.puts( "</trk>" )
     gpx.puts( "</gpx>" )
-
   end #End of GPX
-
-  puts "total:  "
-  puts  gprmc
-  puts "ok:     "
-  puts ok
-  puts "per:    "
-  puts (ok/gprmc)
 
 
 # 例外は小さい単位で捕捉する
