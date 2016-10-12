@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>"
 <gpx version="1.0" creator="WindfurfingLab- http://www.windsurfinglab.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.topografix.com/GPX/1/0" xsi:schemaLocation="http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd">
+<time>2016-10-05T04:02:51Z</time>
 <trk>
-<name>
-</name>
+<name>2016-10-05 04-02</name>
 <trkseg>
 <trkpt lat="3533.5066" lon="13942.7699">
 <ele>0</ele>

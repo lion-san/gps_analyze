@@ -11,16 +11,14 @@ begin
 
   filename = ARGV[0]
 
+  flg = true
+
 
   File.open("gps.gpx", "w") do |gpx|
     #お決まり
     gpx.puts( "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>\"" )
     gpx.puts( "<gpx version=\"1.0\" creator=\"WindfurfingLab- http://www.windsurfinglab.com\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://www.topografix.com/GPX/1/0\" xsi:schemaLocation=\"http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd\">" )
 
-    gpx.puts( "<trk>" )
-    gpx.puts( "<name>" )
-    gpx.puts( "</name>" )
-    gpx.puts( "<trkseg>" )
 
 
     File.open(filename) do |file|
@@ -62,7 +60,27 @@ begin
               end
               index = index + 1
             end
-            
+
+            #FirstData
+            if flg then
+
+              gpx.print( "<time>" )
+              gpx.print( ymd )
+              gpx.print( "T" )
+              gpx.print( time )
+              gpx.print( "Z" )
+              gpx.puts( "</time>" )
+
+              gpx.puts( "<trk>" )
+              gpx.print( "<name>" )
+              gpx.print( ymd )
+              gpx.print( " " )
+              gpx.print( time[0, 2] + "-" + time[3, 2] )
+              gpx.puts( "</name>" )
+              gpx.puts( "<trkseg>" )
+              flg = false
+            end
+              
             #Puts Data
             gpx.print( "<trkpt " )
             gpx.print( "lat=\"" )
