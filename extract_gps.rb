@@ -14,11 +14,7 @@ begin
   flg = true
 
 
-  File.open("gps.gpx", "w") do |gpx|
-    #お決まり
-    gpx.puts( "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>\"" )
-    gpx.puts( "<gpx version=\"1.0\" creator=\"WindfurfingLab- http://www.windsurfinglab.com\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://www.topografix.com/GPX/1/0\" xsi:schemaLocation=\"http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd\">" )
-
+  gpx = nil
 
 
     File.open(filename) do |file|
@@ -61,9 +57,14 @@ begin
               index = index + 1
             end
 
-            #FirstData
+            #FirstData ==============================================
             if flg then
 
+              outFilename = ymd + "_" + time[0, 2] + "-" + time[3, 2]
+              gpx =  File.open( outFilename + ".gpx", "w")
+              #お決まり
+              gpx.puts( "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>\"" )
+              gpx.puts( "<gpx version=\"1.0\" creator=\"WindfurfingLab- http://www.windsurfinglab.com\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://www.topografix.com/GPX/1/0\" xsi:schemaLocation=\"http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd\">" )
               gpx.print( "<time>" )
               gpx.print( ymd )
               gpx.print( "T" )
@@ -73,13 +74,15 @@ begin
 
               gpx.puts( "<trk>" )
               gpx.print( "<name>" )
-              gpx.print( ymd )
-              gpx.print( " " )
-              gpx.print( time[0, 2] + "-" + time[3, 2] )
+              #gpx.print( ymd )
+              #gpx.print( " " )
+              #gpx.print( time[0, 2] + "-" + time[3, 2] )
+              gpx.print( outFilename )
               gpx.puts( "</name>" )
               gpx.puts( "<trkseg>" )
               flg = false
             end
+            #FirstData ==============================================
               
             #Puts Data
             gpx.print( "<trkpt " )
@@ -119,7 +122,12 @@ begin
     gpx.puts( "</trkseg>" )
     gpx.puts( "</trk>" )
     gpx.puts( "</gpx>" )
-  end #End of GPX
+  #end #End of GPX
+
+
+  gpx.close
+
+
 
 
 # 例外は小さい単位で捕捉する
