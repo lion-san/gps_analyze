@@ -1,3 +1,15 @@
+
+# getPosition
+# 緯度経度を返す関数
+def getPosition(str)
+  positions = str.split(".")
+
+  return positions[0][0..str.length-3] \
+    +  "." \
+    +  positions[0][str.length-2..str.length] \
+    +  positions[1]
+end
+
 begin
   # File.openはファイルをオープンし、Fileオブジェクトを返す
   # 第1引数: ファイルパス
@@ -46,9 +58,9 @@ begin
               if index == 1  then
                 time = val[0, 2] + ":" + val[2, 2] + ":" + val[4, 2]
               elsif index == 3 then
-                lat = val
+                lat = getPosition( val )
               elsif index == 5 then
-                lon = val
+                lon = getPosition( val )
               elsif index == 7 then
                 speed = val
               elsif index == 9 then
@@ -136,3 +148,5 @@ rescue SystemCallError => e
 rescue IOError => e
   puts %Q(class=[#{e.class}] message=[#{e.message}])
 end
+
+
