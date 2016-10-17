@@ -4,10 +4,14 @@
 def getPosition(str)
   positions = str.split(".")
 
-  return positions[0][0..str.length-3] \
-    +  "." \
-    +  positions[0][str.length-2..str.length] \
-    +  positions[1]
+  #M to D
+  m = (( positions[0][positions[0].length-2..positions[0].length] + "." + positions[1]).to_f / 60).round(6)
+
+  d = positions[0][0..positions[0].length-3].to_f + m
+
+
+  return d
+
 end
 
 begin
@@ -75,7 +79,7 @@ begin
               outFilename = ymd + "_" + time[0, 2] + "-" + time[3, 2]
               gpx =  File.open( outFilename + ".gpx", "w")
               #お決まり
-              gpx.puts( "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>\"" )
+              gpx.puts( "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" )
               gpx.puts( "<gpx version=\"1.0\" creator=\"WindfurfingLab- http://www.windsurfinglab.com\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://www.topografix.com/GPX/1/0\" xsi:schemaLocation=\"http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd\">" )
               gpx.print( "<time>" )
               gpx.print( ymd )
