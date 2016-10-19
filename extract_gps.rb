@@ -4,7 +4,7 @@
 def getPosition(str)
   positions = str.split(".")
 
-  #M to D
+  #DDDMM.MMMM to DDD.DDDDD
   m = (( positions[0][positions[0].length-2..positions[0].length] + "." + positions[1]).to_f / 60).round(6)
 
   d = positions[0][0..positions[0].length-3].to_f + m
