@@ -131,7 +131,64 @@ begin
 
           end#13
 
-        end#GPRMC
+        #============================================
+        ##先頭文字が$MOTION
+        elsif (labmen[0, 7] == "$MOTION") then
+
+          gpx.puts("<motion>")
+
+          index = 0
+          strAry = labmen.chomp.split(",")
+          strAry.each do |val|
+
+            if index == 1 then
+              gpx.print("<delta_t>")
+              gpx.print(val)
+              gpx.print("</delta_t>")
+            elsif index == 2 then
+              gpx.print("<ax>")
+              gpx.print(val)
+              gpx.print("</ax>")
+            elsif index == 3 then
+              gpx.print("<ay>")
+              gpx.print(val)
+              gpx.print("</ay>")
+            elsif index == 4 then
+              gpx.print("<az>")
+              gpx.print(val)
+              gpx.print("</az>")
+            elsif index == 5 then
+              gpx.print("<gx>")
+              gpx.print(val)
+              gpx.print("</gx>")
+            elsif index == 6 then
+              gpx.print("<gy>")
+              gpx.print(val)
+              gpx.print("</gy>")
+            elsif index == 7 then
+              gpx.print("<gz>")
+              gpx.print(val)
+              gpx.print("</gz>")
+            elsif index == 8 then
+              gpx.print("<mx>")
+              gpx.print(val)
+              gpx.print("</mx>")
+            elsif index == 9 then
+              gpx.print("<my>")
+              gpx.print(val)
+              gpx.print("</my>")
+            elsif index == 10 then
+              gpx.print("<mz>")
+              gpx.print(val)
+              gpx.puts("</mz>")
+            end
+            index = index + 1
+          end
+
+          gpx.puts("</motion>")
+
+        end#GPRMC MOTION
+
       end#labman
     end#file
 
