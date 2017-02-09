@@ -5,12 +5,12 @@ def getPosition(str)
   positions = str.split(".")
 
   #DDDMM.MMMM to DDD.DDDDD
-  m = (( positions[0][positions[0].length-2..positions[0].length] + "." + positions[1]).to_f / 60).round(6)
+  m = (( positions[0][positions[0].length-2..positions[0].length] + "." + positions[1]).to_f / 60)
 
   d = positions[0][0..positions[0].length-3].to_f + m
 
 
-  return d
+  return d.round(9)
 
 end
 
@@ -33,6 +33,7 @@ begin
   gpx = nil
 
 
+  count = 0
     File.open(filename) do |file|
       # IO#each_lineは1行ずつ文字列として読み込み、それを引数にブロックを実行する
       # 第1引数: 行の区切り文字列
@@ -40,6 +41,8 @@ begin
       # 読み込み用にオープンされていない場合にIOError
       file.each_line do |labmen|
         # labmenには読み込んだ行が含まれる
+        #count += 1
+        #puts count
 
         #先頭文字が$GPRMC
         if (labmen[0, 6] == "$GPRMC") then
@@ -133,60 +136,69 @@ begin
 
         #============================================
         ##先頭文字が$MOTION
+=begin
         elsif (labmen[0, 7] == "$MOTION") then
-
-          gpx.puts("<motion>")
-
-          index = 0
-          strAry = labmen.chomp.split(",")
-          strAry.each do |val|
-
-            if index == 1 then
-              gpx.print("<delta_t>")
-              gpx.print(val)
-              gpx.print("</delta_t>")
-            elsif index == 2 then
-              gpx.print("<ax>")
-              gpx.print(val)
-              gpx.print("</ax>")
-            elsif index == 3 then
-              gpx.print("<ay>")
-              gpx.print(val)
-              gpx.print("</ay>")
-            elsif index == 4 then
-              gpx.print("<az>")
-              gpx.print(val)
-              gpx.print("</az>")
-            elsif index == 5 then
-              gpx.print("<gx>")
-              gpx.print(val)
-              gpx.print("</gx>")
-            elsif index == 6 then
-              gpx.print("<gy>")
-              gpx.print(val)
-              gpx.print("</gy>")
-            elsif index == 7 then
-              gpx.print("<gz>")
-              gpx.print(val)
-              gpx.print("</gz>")
-            elsif index == 8 then
-              gpx.print("<mx>")
-              gpx.print(val)
-              gpx.print("</mx>")
-            elsif index == 9 then
-              gpx.print("<my>")
-              gpx.print(val)
-              gpx.print("</my>")
-            elsif index == 10 then
-              gpx.print("<mz>")
-              gpx.print(val)
-              gpx.puts("</mz>")
-            end
-            index = index + 1
+          if flg then
+            next 
           end
 
-          gpx.puts("</motion>")
+          strAry = labmen.split(",")
 
+          if ( strAry.length == 11) then
+
+            gpx.puts("<motion>")
+
+            index = 0
+            strAry = labmen.chomp.split(",")
+            strAry.each do |val|
+
+              if index == 1 then
+                gpx.print("<delta_t>")
+                gpx.print(val)
+                gpx.print("</delta_t>")
+              elsif index == 2 then
+                gpx.print("<ax>")
+                gpx.print(val)
+                gpx.print("</ax>")
+              elsif index == 3 then
+                gpx.print("<ay>")
+                gpx.print(val)
+                gpx.print("</ay>")
+              elsif index == 4 then
+                gpx.print("<az>")
+                gpx.print(val)
+                gpx.print("</az>")
+              elsif index == 5 then
+                gpx.print("<gx>")
+                gpx.print(val)
+                gpx.print("</gx>")
+              elsif index == 6 then
+                gpx.print("<gy>")
+                gpx.print(val)
+                gpx.print("</gy>")
+              elsif index == 7 then
+                gpx.print("<gz>")
+                gpx.print(val)
+                gpx.print("</gz>")
+              elsif index == 8 then
+                gpx.print("<mx>")
+                gpx.print(val)
+                gpx.print("</mx>")
+              elsif index == 9 then
+                gpx.print("<my>")
+                gpx.print(val)
+                gpx.print("</my>")
+              elsif index == 10 then
+                gpx.print("<mz>")
+                gpx.print(val)
+                gpx.puts("</mz>")
+              end
+              index = index + 1
+            end
+
+            gpx.puts("</motion>")
+          end#11
+=end
         end#GPRMC MOTION
 
       end#labman

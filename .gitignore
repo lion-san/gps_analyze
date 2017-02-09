@@ -18,3 +18,9 @@ doc/
 .idea
 .secret
 .*.un~
+.csv
+.CSV
+.gpx
+.nmea
+.xls
+.xlsx
